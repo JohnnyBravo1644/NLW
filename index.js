@@ -20,7 +20,29 @@ const cadastrarMeta = async () => {
 } 
 
 const listarMeta = async () => {
-    const resposta = await checkbox
+    const resposta = await checkbox ({
+        message: "navegue pelas setas, selecione com especo, finalize com enter",
+        choices: [...metas],
+        instructions: false,
+    })
+
+    if(resposta.length == 0) {
+        console.log("nao ha uma meta selecionada")
+    }
+
+    metas.forEach((m) => {
+        m.checked = false
+    })
+
+    resposta.forEach(() => {
+        const meta = metas.find((m) => {
+            return m.value == resposta
+        })
+
+        meta.checked = true
+    })
+
+    console.log("As metas foram concluidas")
 } 
 
 
@@ -35,6 +57,7 @@ const start = async () => {
             message: "menu >",
             choices: [
                 {name: "cadastrar meta", value: "cadastrar"},
+                {name: "listar meta", value: "listar"},
                 {name: "sair", value: "sair"}
             ]
         })
@@ -46,7 +69,7 @@ const start = async () => {
                 console.log(metas)
                 break
 
-            case "cadastrar": 
+            case "listar": 
                 await listarMeta()
                 break
 

@@ -20,7 +20,15 @@ let metaObjeto = {
 //metaObjeto.value = "How did you the eletric will do job?"
 metaObjeto.log (metaObjeto.value)
 
-//function // arrow function
-const criarMeta = () => {
+//fencao start
+const start = () => {
 
+    let count = 1
+
+    while(count <= 10){
+        console.log(count++)
+    
+    }
 }
+
+start()

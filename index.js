@@ -19,6 +19,7 @@ const cadastrarMeta = async () => {
     metas.push({value: meta, checked: false})
 } 
 
+//funcao de listar metas
 const listarMeta = async () => {
     const resposta = await checkbox ({
         message: "navegue pelas setas, selecione com especo, finalize com enter",
@@ -26,13 +27,13 @@ const listarMeta = async () => {
         instructions: false,
     })
 
-    if(resposta.length == 0) {
-        console.log("nao ha uma meta selecionada")
-    }
-
     metas.forEach((m) => {
         m.checked = false
     })
+
+    if(resposta.length == 0) {
+        console.log("nao ha uma meta selecionada")
+    }
 
     resposta.forEach(() => {
         const meta = metas.find((m) => {
@@ -56,11 +57,27 @@ const metasRealizadas = async () => {
     }
 
     await select ({
-        message: "metas realizadas",
+        message: "metas realizadas " + realizadas.length,
         choices: [...realizadas]
     })
 
     console.log(realizadas)
+}
+
+const metasAbertas = async () => {
+    const abertas = metas.filter((meta) => {
+        return meta.checked != true
+    })
+
+    if(abertas.length == 0) {
+        console.log("nenhuma meta em aberto")
+        return
+    }
+
+    await select({
+        message: "metas abertas " + abertas.length,
+        choices: [...abertas]
+    })
 }
 
 
@@ -77,6 +94,7 @@ const start = async () => {
                 {name: "cadastrar meta", value: "cadastrar"},
                 {name: "listar meta", value: "listar"},
                 {name: "metas realizadas", value: "realizadas"},
+                {name: "metas abertas", value: "abertas"},
                 {name: "sair", value: "sair"}
             ]
         })
@@ -94,6 +112,10 @@ const start = async () => {
 
             case "realizadas":
                 await metasRealizadas()
+                break
+
+            case "abertas":
+                await metasAbertas()
                 break
 
             case "sair": console.log("encerrando...") 

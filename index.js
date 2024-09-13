@@ -1,10 +1,8 @@
 const { select, input, checkbox } = require('@inquirer/prompts')
 
-let meta = {value: 'Tomar 3L de água por dia', checked: false,}
-
-let mensagem = "(---Bem vindo---)";
-
 let metas = [meta];
+let meta = {value: 'Tomar 3L de água por dia', checked: false,}
+let mensagem = "(---Bem vindo---)";
 
 //funcao para cadastrar as metas
 const cadastrarMeta = async () => {
@@ -18,7 +16,7 @@ const cadastrarMeta = async () => {
     metas.push({value: meta, checked: false})
 
     mensagem = "Meta cadastrada com sucesso"
-} 
+}
 
 //funcao de listar metas
 const listarMeta = async () => {

@@ -1,8 +1,24 @@
+//pacotes utilizados
 const { select, input, checkbox } = require('@inquirer/prompts')
+const fs = require("fs").promises
 
-let metas = [meta];
-let meta = {value: 'Tomar 3L de água por dia', checked: false,}
+//variaveis
+let metas
 let mensagem = "(---Bem vindo---)";
+
+//funcao que importa as metas no arquivo json
+const carregarMetas = async () => {
+    try{
+        const dados = await fs.readFile("metas.json", "utf-8")
+        metas = JSON.parse(dados)
+    }
+    catch(error) {}
+}
+
+//funcao que salva as metas no arquivo json
+const salvarMetas = async () => {
+    await fs.writeFile("metas.json", JSON.stringify(metas, null, 2))
+}
 
 //funcao para cadastrar as metas
 const cadastrarMeta = async () => {
@@ -122,11 +138,13 @@ const mostrarMensagem = () => {
     }
 }
 
-//funcao do menu
+//funcao que starta a aplicacao(tambem gera o menu)
 const start = async () => {
+    await carregarMetas()
     
     while (true) {
-        mostrarMensagem();
+        mostrarMensagem()
+        await salvarMetas()
 
         //funcao que mostra e cadastra as opcoes
         const opcao = await select ({
@@ -145,11 +163,13 @@ const start = async () => {
         switch(opcao){
             case "cadastrar": 
                 await cadastrarMeta()
+                await salvarMetas()
                 console.log(metas)
                 break
 
             case "listar": 
                 await listarMeta()
+                await salvarMetas()
                 break
 
             case "realizadas":
@@ -162,6 +182,7 @@ const start = async () => {
 
             case "deletar":
                 await deletarMetas()
+                await salvarMetas()
                 break
 
             case "sair": console.log("encerrando...") 
